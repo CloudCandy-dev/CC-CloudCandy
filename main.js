@@ -1,7 +1,5 @@
 /* ═══════════════════════════════════════════
-   CloudCandy - Main JavaScript v2
-   Enhanced: Clouds, Tropical Fish, Coral Reefs,
-   Atmospheric Particles, Animated Waves
+   CloudCandy - Main Logic
    ═══════════════════════════════════════════ */
 
 import skySrc from './img/sky.jpg';
@@ -37,11 +35,11 @@ function initWaterRipple() {
   const overlay = document.getElementById('ripple-overlay');
   if (!displacement || !turbulence || !overlay) return;
 
-  // リプルを即座に開始（フェードインと同時）
+  // 初期化に合わせて波紋エフェクトを開始
   document.body.classList.add('ripple-active');
 
-  const duration = 1500;    // リプル時間（ms）- 短め
-  const peakScale = 12;     // 控えめな歪み
+  const duration = 1500;    // 波紋の持続時間 (ms)
+  const peakScale = 12;     // エフェクトの強さ
   const startTime = performance.now();
 
   function animateRipple(now) {
@@ -69,7 +67,7 @@ function initWaterRipple() {
     }
   }
 
-  // 白フェードインとリプルを同時スタート
+  // フェードインと波紋を同時に開始
   requestAnimationFrame(() => {
     overlay.classList.add('fade-out');
     requestAnimationFrame(animateRipple);
@@ -241,6 +239,7 @@ function initParticleCanvas() {
 
   function rebuildCorals() {
     corals = [];
+    // 画面幅に合わせてサンゴをランダムに配置
     for (let x = 20; x < w; x += rand(40, 90)) {
       corals.push(new Coral(x, h - rand(0, 15)));
     }
@@ -250,7 +249,7 @@ function initParticleCanvas() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
 
-    // リサイズ時にサンゴの配置を再計算（初期化完了後のみ実行）
+    // リサイズ時にオブジェクトを再配置
     if (particlesInitialized) {
       rebuildCorals();
     }
@@ -272,20 +271,20 @@ function initParticleCanvas() {
     constructor() { this.reset(true); }
     reset(init) {
       this.isForeground = Math.random() > 0.5;
-      // 雲を少し小さめに調整
+      // 遠景・近景の設定
       this.scale = this.isForeground ? rand(0.8, 2.0) : rand(0.3, 0.8);
       this.speed = (this.isForeground ? rand(0.1, 0.3) : rand(0.02, 0.08)) * (Math.random() > 0.5 ? 1 : -1);
-      this.y = rand(-h * 0.05, h * 0.35); // 水面より確実に上に配置
+      this.y = rand(-h * 0.05, h * 0.35); // 水面上に配置
       this.opacity = this.isForeground ? rand(0.4, 0.7) : rand(0.15, 0.3);
       this.x = init ? rand(-w * 0.2, w * 1.2) : (this.speed > 0 ? -300 * this.scale : w + 300 * this.scale);
 
       this.blobs = [];
-      const count = Math.floor(rand(8, 16)); // 円の数を増やしてモコモコにする
+      const count = Math.floor(rand(8, 16)); // 雲の密度設定
       for (let i = 0; i < count; i++) {
         const angle = rand(0, Math.PI); // 上半分を中心に配置
         const dist = rand(0, 90) * this.scale; // 中心からの距離
 
-        // より丸に近い楕円で構成（横長になりすぎないように）
+        // 自然な雲の形状（楕円）を生成
         const sizeBase = Math.max(20, 90 - (dist / this.scale)); // 中心ほど大きく、外側ほど小さく
         this.blobs.push({
           ox: Math.cos(angle) * dist * 1.5, // 横方向への広がり
@@ -301,7 +300,7 @@ function initParticleCanvas() {
       if (this.speed < 0 && this.x < -400 * this.scale) this.reset(false);
     }
     draw(ctx, heroTop) {
-      // パララックス：スクロールに対し半分程度の速度で移動
+      // パララックス：スクロールに同期
       const pY = this.y + heroTop * 0.5;
       ctx.save();
       ctx.globalAlpha = this.opacity;
@@ -324,7 +323,7 @@ function initParticleCanvas() {
     }
   }
 
-  /* ═══════ ATMOSPHERIC PARTICLE (dust / light motes) ═══════ */
+  /* ═══════ ATMOSPHERIC PARTICLES ═══════ */
   class DustMote {
     constructor() { this.reset(true); }
     reset(init) {
@@ -459,7 +458,7 @@ function initParticleCanvas() {
       ctx.fillStyle = `rgba(${br}, ${bg}, ${bb}, 0.9)`;
       ctx.fill();
 
-      // Stripes (white bands like clownfish)
+      // ボディの縞模様
       if (this.hasStripes) {
         ctx.fillStyle = `rgba(255, 255, 255, 0.35)`;
         for (let i = 0; i < this.stripeCount; i++) {
@@ -508,11 +507,11 @@ function initParticleCanvas() {
       this.color = coralPalette[Math.floor(rand(0, coralPalette.length))];
       this.scale = rand(0.5, 1.2);
       this.swayPhase = rand(0, Math.PI * 2);
-      // 🔥 非常にゆっくりとした自然な海流の揺れに修正 🔥
+      // 自然な揺らぎの設定
       this.swaySpeed = rand(0.0005, 0.002);
       this.swayAmp = rand(2, 6) * 0.01;
 
-      // オフスクリーンキャンバスで1度だけ精細に描画（パフォーマンス最適化）
+      // パフォーマンス最適化のためオフスクリーン描画を使用
       this.offscreen = document.createElement('canvas');
       this.offscreen.width = 240;
       this.offscreen.height = 240;
@@ -521,16 +520,16 @@ function initParticleCanvas() {
     }
 
     renderOffscreen(ctx) {
-      // 主張を抑えるためにブラーと明度低下
+      // 背景に馴染ませるための処理
       ctx.filter = 'blur(4px) brightness(0.7)';
       const [r, g, b] = this.color;
       ctx.translate(120, 240); // center-bottom
 
       if (this.type === 0) {
-        // 枝状サンゴ (フラクタル)
+        // 枝状
         this.drawFractalBranch(ctx, 0, 0, -50, 12, -Math.PI / 2, r, g, b, 0);
       } else if (this.type === 1) {
-        // ウミウチワ (扇状サンゴ)
+        // 扇状
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.85)`;
         ctx.beginPath();
         ctx.moveTo(0, 0);
@@ -552,7 +551,7 @@ function initParticleCanvas() {
           ctx.stroke();
         }
       } else {
-        // パイプ状サンゴ (カイメン等)
+        // パイプ状
         for (let i = 0; i < 6; i++) {
           const w = rand(12, 24);
           const h = rand(40, 120);
@@ -614,7 +613,7 @@ function initParticleCanvas() {
       ctx.save();
       ctx.translate(this.baseX, this.baseY);
       ctx.scale(this.scale, this.scale);
-      ctx.rotate(rot); // 全体が根元からゆっくり揺れる
+      ctx.rotate(rot);
       ctx.drawImage(this.offscreen, -120, -240);
       ctx.restore();
     }
@@ -641,7 +640,7 @@ function initParticleCanvas() {
       if ((this.dir > 0 && this.x > w + 50) || (this.dir < 0 && this.x < -50)) this.reset(false);
     }
     draw(ctx, heroTop) {
-      const pY = this.y + heroTop * 0.4; // 水上パララックス
+      const pY = this.y + heroTop * 0.4; // パララックス
       const wingY = Math.sin(this.flapPhase) * this.size * 0.8;
       ctx.save();
       ctx.translate(this.x, pY);
@@ -676,7 +675,7 @@ function initParticleCanvas() {
       this.pulsePhase += this.pulseSpeed;
       this.driftPhase += 0.01;
       const pulseForce = Math.max(0, Math.sin(this.pulsePhase));
-      this.y -= this.speedY + pulseForce * 0.7; // 収縮時に加速
+      this.y -= this.speedY + pulseForce * 0.7; // パルス移動
       this.x += Math.cos(this.driftPhase) * 0.4;
       if (this.y < -150) this.reset(false);
     }
@@ -741,7 +740,7 @@ function initParticleCanvas() {
     update() {
       this.y -= this.speedY;
       this.x += this.speedX + Math.sin(this.phase += 0.03) * 0.2;
-      if (this.y < h * 0.3) this.reset(false); // 深海のみ存在
+      if (this.y < h * 0.3) this.reset(false); // 生息域の設定
     }
     draw(ctx) {
       const glow = Math.sin(this.phase * 0.5) * 0.5 + 0.5;
@@ -783,7 +782,7 @@ function initParticleCanvas() {
 
   /* ═══════ WATER SURFACE WAVE ═══════ */
   function drawWaterSurface(ctx, sp, heroBottom) {
-    // Heroセクションの最下部に波を完全に追従させる
+    // ヒーローセクションの動きに同期
     const waveY = heroBottom - 20;
 
     // 画面外に出た場合は描画スキップ
@@ -793,7 +792,7 @@ function initParticleCanvas() {
       ctx.beginPath();
       ctx.moveTo(0, waveY);
       for (let x = 0; x <= w; x += 4) {
-        // 波のうねりを時間とレイヤーごとに計算
+        // 波の形状をレイヤーごとに計算
         const y = waveY
           + Math.sin(x * 0.006 + time * 0.5 + layer * 1.2) * 14
           + Math.sin(x * 0.012 + time * 0.8 + layer * 0.8) * 8
