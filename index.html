@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>あめぐも / CloudCandy - Official Website</title>
+  <meta name="description" content="Vtuber あめぐも（CloudCandy）の公式サイト。配信、クリエイティブ、エンジニアリングなど多ジャンルで活動するマルチクリエイター。" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Shippori+Mincho&display=swap"
+    rel="stylesheet" />
+
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js" defer></script>
+
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <!-- ═══════════ WATER RIPPLE SVG FILTER ═══════════ -->
+  <svg class="ripple-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="ripple-filter">
+        <feTurbulence id="ripple-turbulence" type="fractalNoise" baseFrequency="0.015 0.015" numOctaves="3" seed="2"
+          result="noise" />
+        <feDisplacementMap id="ripple-displacement" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R"
+          yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+  <div id="ripple-overlay"></div>
+
+  <!-- ═══════════ PARTICLE CANVAS (Full-page background) ═══════════ -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- ═══════════ NAVIGATION ═══════════ -->
+  <header id="main-nav">
+    <nav class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-text">CloudCandy</span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="#hero" class="nav-link active" data-section="hero">Home</a>
+        <a href="#about" class="nav-link" data-section="about">About</a>
+        <a href="#activities" class="nav-link" data-section="activities">Portfolio</a>
+        <a href="#links" class="nav-link" data-section="links">Links</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="メニューを開く">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ═══════════ HERO SECTION ═══════════ -->
+    <section id="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <p class="hero-sub">Virtual Creator</p>
+          <h1 class="hero-title">
+            <span class="title-ja">あめぐも</span>
+            <span class="title-en">CloudCandy</span>
+          </h1>
+          <p class="hero-catch">量より質を。</p>
+          <div class="hero-cta">
+            <!-- 削除: Activitiesを見る、Aboutボタン -->
+          </div>
+        </div>
+        <div class="hero-character">
+          <img src="/img/kao1-1.png" alt="あめぐも - あざらしアバター" class="character-img" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ ABOUT SECTION ═══════════ -->
+    <section id="about">
+      <div class="section-container">
+        <h2 class="section-title fade-in">
+          About
+        </h2>
+        <div class="about-grid">
+          <div class="about-card glass fade-in">
+            <div class="about-avatar">
+              <img src="/img/kao1-1.png" alt="あめぐも" />
+            </div>
+            <div class="about-info">
+              <h3>あめぐも / CloudCandy</h3>
+              <p class="about-role">Virtual Multi-Creator</p>
+              <div class="about-tags">
+                <span class="tag">🎮 ゲーム配信</span>
+                <span class="tag">🎬 映像編集</span>
+                <span class="tag">💻 ソフトウェア開発</span>
+                <span class="tag">🎨 クリエイティブ</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-description glass fade-in">
+            <p>
+              Vtuber「あめぐも」です。<br />
+              ゲーム配信から映像編集、ソフトウェア開発まで、<br />
+              ジャンルの垣根を越えてクリエイティブに活動しています。
+            </p>
+            <p>
+              「量より質を」をテーマに、<br />
+              配信エンタメ、映像制作、ソフトウェア開発などを通じて<br />
+              みなさんに楽しさと便利さをお届けします。
+            </p>
+            <div class="about-concept">
+              <span class="concept-label">Concept</span>
+              <span class="concept-text">清涼感 × 透明感 × テクノロジー</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ PORTFOLIO SECTION ═══════════ -->
+    <section id="activities">
+      <div class="section-container">
+        <h2 class="section-title fade-in">
+          Portfolio
+        </h2>
+
+        <!-- Tab Switcher -->
+        <div class="tab-switcher glass fade-in" id="tab-switcher">
+          <button class="tab-btn active" data-tab="editing">
+            <span class="tab-icon">🎬</span>
+            映像編集
+          </button>
+          <button class="tab-btn" data-tab="material">
+            <span class="tab-icon">🎨</span>
+            素材配布
+          </button>
+          <button class="tab-btn" data-tab="tutorial">
+            <span class="tab-icon">📚</span>
+            編集講座
+          </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-contents">
+          <!-- ── 映像編集 ── -->
+          <div class="tab-panel active" id="panel-editing">
+            <p class="portfolio-desc fade-in">ミュージックビデオ・キルクリップ・OP・ED・切り抜き動画など幅広い映像制作に対応。</p>
+            <div class="portfolio-grid">
+              <a href="https://x.com/CLDCAN_1/status/1363329307888689153/video/1" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/edit/1.jpg" alt="映像編集作品1" loading="lazy" />
+                  <div class="portfolio-overlay"><span>▶ 再生</span></div>
+                </div>
+              </a>
+              <a href="https://x.com/CLDCAN_1/status/1400399863402086400/video/1" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/edit/2.jpg" alt="映像編集作品2" loading="lazy" />
+                  <div class="portfolio-overlay"><span>▶ 再生</span></div>
+                </div>
+              </a>
+              <a href="https://x.com/CLDCAN_1/status/1453392657770639360/video/1" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/edit/3.jpg" alt="映像編集作品3" loading="lazy" />
+                  <div class="portfolio-overlay"><span>▶ 再生</span></div>
+                </div>
+              </a>
+              <a href="https://x.com/CLDCAN_1/status/1323234276138053633/video/1" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/edit/4.jpg" alt="映像編集作品4" loading="lazy" />
+                  <div class="portfolio-overlay"><span>▶ 再生</span></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- ── 素材配布 ── -->
+          <div class="tab-panel" id="panel-material">
+            <p class="portfolio-desc fade-in">配信者向けオーバーレイ素材や編集素材を無料で配布中。</p>
+            <div class="portfolio-grid">
+              <a href="https://cloudcandy-shop.booth.pm/items/3636577" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/material/1.jpg" alt="配布素材1" loading="lazy" />
+                  <div class="portfolio-overlay"><span>BOOTH →</span></div>
+                </div>
+              </a>
+              <a href="https://cloudcandy-shop.booth.pm/items/6430453" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/material/2.jpg" alt="配布素材2" loading="lazy" />
+                  <div class="portfolio-overlay"><span>BOOTH →</span></div>
+                </div>
+              </a>
+              <a href="https://cloudcandy-shop.booth.pm/items/6430479" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/material/3.jpg" alt="配布素材3" loading="lazy" />
+                  <div class="portfolio-overlay"><span>BOOTH →</span></div>
+                </div>
+              </a>
+              <a href="https://cloudcandy-shop.booth.pm/items/6430556" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/material/4.jpg" alt="配布素材4" loading="lazy" />
+                  <div class="portfolio-overlay"><span>BOOTH →</span></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- ── 編集講座 ── -->
+          <div class="tab-panel" id="panel-tutorial">
+            <p class="portfolio-desc fade-in">AviUtlでの映像編集の基礎から応用まで、わかりやすく解説する動画シリーズ。</p>
+            <div class="portfolio-grid">
+              <a href="https://youtu.be/Pu3pK5Vmt-c" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/edit teach/1.jpg" alt="編集講座1" loading="lazy" />
+                  <div class="portfolio-overlay"><span>▶ YouTube</span></div>
+                </div>
+              </a>
+              <a href="https://youtu.be/BFsDnGv_mzY" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/edit teach/2.jpg" alt="編集講座2" loading="lazy" />
+                  <div class="portfolio-overlay"><span>▶ YouTube</span></div>
+                </div>
+              </a>
+              <a href="https://youtu.be/E6evR-Ecubs" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/edit teach/3.jpg" alt="編集講座3" loading="lazy" />
+                  <div class="portfolio-overlay"><span>▶ YouTube</span></div>
+                </div>
+              </a>
+              <a href="https://youtu.be/9_xx2q-pCFE" target="_blank" rel="noopener"
+                class="portfolio-card glass fade-in">
+                <div class="portfolio-thumb">
+                  <img src="/img/edit teach/4.jpg" alt="編集講座4" loading="lazy" />
+                  <div class="portfolio-overlay"><span>▶ YouTube</span></div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ LINKS & CONTACT ═══════════ -->
+    <section id="links">
+      <div class="section-container">
+        <h2 class="section-title fade-in">
+          Links &amp; Contact
+        </h2>
+        <div class="links-grid">
+          <!-- SNS Links -->
+          <div class="sns-section fade-in">
+            <h3 class="links-subtitle">SNS</h3>
+            <div class="sns-grid">
+              <a href="https://x.com/CLDCAN_1" class="sns-card glass" target="_blank" rel="noopener">
+                <div class="sns-icon twitter-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </div>
+                <span>X</span>
+              </a>
+              <a href="https://www.youtube.com/@CloudCandy_1" class="sns-card glass" target="_blank" rel="noopener">
+                <div class="sns-icon youtube-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                </div>
+                <span>YouTube (メイン)</span>
+              </a>
+              <a href="https://www.youtube.com/@CloudCandy_2" class="sns-card glass" target="_blank" rel="noopener">
+                <div class="sns-icon youtube-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                </div>
+                <span>YouTube (サブ)</span>
+              </a>
+              <a href="https://www.twitch.tv/cloudcandy_1" class="sns-card glass" target="_blank" rel="noopener">
+                <div class="sns-icon twitch-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z" />
+                  </svg>
+                </div>
+                <span>Twitch</span>
+              </a>
+              <a href="https://github.com/CloudCandy-dev" class="sns-card glass" target="_blank" rel="noopener">
+                <div class="sns-icon github-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                  </svg>
+                </div>
+                <span>GitHub</span>
+              </a>
+              <a href="https://www.tiktok.com/@cloudcandy_tiktok" class="sns-card glass" target="_blank" rel="noopener">
+                <div class="sns-icon" style="background: linear-gradient(135deg, #25F4EE, #FE2C55); color: #fff;">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                    <path
+                      d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.73a8.19 8.19 0 0 0 4.76 1.52v-3.4a4.85 4.85 0 0 1-1-.16z" />
+                  </svg>
+                </div>
+                <span>TikTok</span>
+              </a>
+              <a href="https://cloudcandy-shop.booth.pm/" class="sns-card glass" target="_blank" rel="noopener">
+                <div class="sns-icon" style="background: linear-gradient(135deg, #FC4D50, #F53844); color: #fff;">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                    <path
+                      d="M3 3h18v18H3V3zm9 4a4 4 0 0 0-4 4v2a4 4 0 0 0 8 0v-2a4 4 0 0 0-4-4zm-2 4a2 2 0 1 1 4 0v2a2 2 0 1 1-4 0v-2z" />
+                  </svg>
+                </div>
+                <span>BOOTH</span>
+              </a>
+              <a href="https://www.amazon.co.jp/hz/wishlist/ls/3UPEXY44N6KH4?ref_=wl_share" class="sns-card glass"
+                target="_blank" rel="noopener">
+                <div class="sns-icon" style="background: linear-gradient(135deg, #FF9900, #FFB84D); color: #fff;">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                    <path
+                      d="M21.49 13.926c-.154-.078-.345-.072-.483.017l-.01.007A15.85 15.85 0 0 1 12 16.5a15.85 15.85 0 0 1-8.997-2.55l-.01-.007a.516.516 0 0 0-.483-.017.467.467 0 0 0-.26.426c0 .18.099.347.259.43C6.063 16.938 9.472 18 12 18c2.528 0 5.937-1.062 9.491-3.218a.49.49 0 0 0 .259-.43.467.467 0 0 0-.26-.426zM22 11c0-.586-.543-1-1.198-1-.377 0-1.091.315-1.091.315C17.494 11.467 14.213 12 12 12s-5.494-.533-7.711-1.685C4.289 10.315 3.575 10 3.198 10 2.543 10 2 10.414 2 11c0 .405.26.756.63.936C5.253 13.261 8.667 14 12 14s6.747-.739 9.37-2.064c.37-.18.63-.531.63-.936zM12 4C7.582 4 4 5.79 4 8s3.582 4 8 4 8-1.79 8-4-3.582-4-8-4z" />
+                  </svg>
+                </div>
+                <span>欲しいものリスト</span>
+              </a>
+            </div>
+          </div>
+          <!-- Contact via X DM -->
+          <div class="contact-section fade-in">
+            <h3 class="links-subtitle">Contact</h3>
+            <div class="contact-card glass">
+              <div class="contact-dm-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </div>
+              <h4 class="contact-dm-title">X の DMへ</h4>
+              <p>お仕事のご依頼・コラボのご相談<br />その他お問い合わせはお気軽にDMください。</p>
+              <a href="https://x.com/messages/compose?recipient_id=CLDCAN_1" target="_blank" rel="noopener"
+                class="btn btn-primary btn-dm">
+                <span class="btn-ripple"></span>
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                DMを送る
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <p class="footer-logo">☁ CloudCandy</p>
+      <p class="footer-copy">&copy; 2026 あめぐも / CloudCandy. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div id="custom-cursor"></div>
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>
