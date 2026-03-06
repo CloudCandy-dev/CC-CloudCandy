@@ -1,5 +1,7 @@
 /* ═══════════════════════════════════════════
    CloudCandy - Main Logic
+   
+   Somebody Toucha My Spaghet code!
    ═══════════════════════════════════════════ */
 
 import skySrc from './img/sky.jpg';
