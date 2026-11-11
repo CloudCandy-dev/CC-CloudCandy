@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Cloudflare Workers（静的アセット配信）用設定
+  // プロジェクト名は Cloudflare 側の Worker 名に合わせる
+  "name": "cc-cloudcandy",
+  "compatibility_date": "2026-11-10",
+  "observability": {
+    "enabled": true
+  },
+  // ビルド成果物 dist をそのまま配信する
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
